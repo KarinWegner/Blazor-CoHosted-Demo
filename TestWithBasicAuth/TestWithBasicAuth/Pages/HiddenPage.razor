@@ -1,0 +1,9 @@
+﻿@page "/hidden"
+@using Microsoft.AspNetCore.Authorization
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@attribute [Authorize(Roles = "Admin")]
+<h3>HiddenPage</h3>
+
+@code {
+
+}

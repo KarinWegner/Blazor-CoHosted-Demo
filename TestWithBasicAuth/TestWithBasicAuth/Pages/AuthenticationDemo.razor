@@ -1,0 +1,44 @@
+﻿@page "/authentication"
+@using Microsoft.AspNetCore.Components.Authorization
+@inject AuthenticationStateProvider AuthenticationStateProvider
+<h3>AuthenticationDemo</h3>
+
+<AuthorizeView>
+    <Authorized>
+        <p>Här är authorized paragraf. Du kan se det för att du är inloggad</p>
+        <p>@isAdmin</p>
+        
+        @if (isAdmin)
+        {
+           <h3>Adminparagraf</h3>
+           <p> du ser detta för att du är en admin</p>
+        }
+        @if (isEmployee)
+        {
+            <h3>Employeeparagraf</h3>
+            <p>Du ser detta eftersom du är en employee</p>
+        }
+    </Authorized>
+    <NotAuthorized>
+        <p>Du har inte behörighet att se innehållet.</p>
+    </NotAuthorized>
+</AuthorizeView>
+
+@code {
+    private bool isAdmin;
+    private bool isEmployee;
+    protected override async Task OnInitializedAsync()
+    {
+
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        if(user.Identity != null && user.Identity.IsAuthenticated){
+            isAdmin = user.IsInRole("Admin");
+        }
+        if(user.Identity != null && user.Identity.IsAuthenticated)
+        {
+            isEmployee = user.IsInRole("Employee");
+        }
+    }
+}
